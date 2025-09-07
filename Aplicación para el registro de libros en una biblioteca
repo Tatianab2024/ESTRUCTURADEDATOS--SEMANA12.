@@ -1,43 +1,85 @@
-# Registro de Libros en una Biblioteca usando Conjuntos y Mapas
+using System;
+using System.Collections.Generic;
 
-# Conjunto de géneros
-generos = set()
+class Biblioteca
+{
+    // Conjunto de géneros (sin duplicados)
+    static HashSet<string> generos = new HashSet<string>();
 
-# Diccionario principal de la biblioteca
-biblioteca = {}
+    // Diccionario principal de la biblioteca
+    static Dictionary<int, Dictionary<string, object>> biblioteca = new Dictionary<int, Dictionary<string, object>>();
 
-def registrar_libro(codigo, titulo, autor, anio, genero):
-    if codigo in biblioteca:
-        print("El código ya existe. No se puede registrar el libro.")
-    else:
-        biblioteca[codigo] = {
-            "titulo": titulo,
-            "autor": autor,
-            "anio": anio,
-            "genero": genero
+    // Método para registrar un libro
+    static void RegistrarLibro(int codigo, string titulo, string autor, int anio, string genero)
+    {
+        if (biblioteca.ContainsKey(codigo))
+        {
+            Console.WriteLine("⚠️ El código ya existe. No se puede registrar el libro.");
         }
-        generos.add(genero)
-        print(f"Libro '{titulo}' registrado con éxito.")
+        else
+        {
+            biblioteca[codigo] = new Dictionary<string, object>()
+            {
+                {"titulo", titulo},
+                {"autor", autor},
+                {"anio", anio},
+                {"genero", genero}
+            };
+            generos.Add(genero);
+            Console.WriteLine($"✅ Libro '{titulo}' registrado con éxito.");
+        }
+    }
 
-def mostrar_libros():
-    for codigo, info in biblioteca.items():
-        print(f"Código: {codigo} | Título: {info['titulo']} | Autor: {info['autor']} | Año: {info['anio']} | Género: {info['genero']}")
+    // Método para mostrar todos los libros
+    static void MostrarLibros()
+    {
+        Console.WriteLine("\n📚 Listado de libros en la biblioteca:");
+        foreach (var libro in biblioteca)
+        {
+            Console.WriteLine($"Código: {libro.Key} | " +
+                              $"Título: {libro.Value["titulo"]} | " +
+                              $"Autor: {libro.Value["autor"]} | " +
+                              $"Año: {libro.Value["anio"]} | " +
+                              $"Género: {libro.Value["genero"]}");
+        }
+    }
 
-def consultar_libro(codigo):
-    if codigo in biblioteca:
-        print("Información del libro:", biblioteca[codigo])
-    else:
-        print("El libro no está registrado.")
+    // Método para consultar un libro por código
+    static void ConsultarLibro(int codigo)
+    {
+        if (biblioteca.ContainsKey(codigo))
+        {
+            Console.WriteLine("\n🔍 Información del libro encontrado:");
+            foreach (var dato in biblioteca[codigo])
+            {
+                Console.WriteLine($"{dato.Key}: {dato.Value}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("❌ El libro no está registrado.");
+        }
+    }
 
-def mostrar_generos():
-    print("Géneros disponibles:", generos)
+    // Método para mostrar los géneros disponibles
+    static void MostrarGeneros()
+    {
+        Console.WriteLine("\n📖 Géneros disponibles:");
+        foreach (var genero in generos)
+        {
+            Console.WriteLine($"- {genero}");
+        }
+    }
 
+    // Programa principal
+    static void Main(string[] args)
+    {
+        RegistrarLibro(1, "Cien Años de Soledad", "Gabriel García Márquez", 1967, "Novela");
+        RegistrarLibro(2, "Clean Code", "Robert C. Martin", 2008, "Tecnología");
+        RegistrarLibro(3, "El Principito", "Antoine de Saint-Exupéry", 1943, "Infantil");
 
-# --- Ejemplo de uso ---
-registrar_libro(1, "Cien Años de Soledad", "Gabriel García Márquez", 1967, "Novela")
-registrar_libro(2, "Clean Code", "Robert C. Martin", 2008, "Tecnología")
-registrar_libro(3, "El Principito", "Antoine de Saint-Exupéry", 1943, "Infantil")
-
-mostrar_libros()
-consultar_libro(2)
-mostrar_generos()
+        MostrarLibros();
+        ConsultarLibro(2);
+        MostrarGeneros();
+    }
+}
