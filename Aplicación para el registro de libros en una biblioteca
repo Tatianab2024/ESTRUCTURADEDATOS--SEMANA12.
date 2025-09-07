@@ -1,0 +1,43 @@
+# Registro de Libros en una Biblioteca usando Conjuntos y Mapas
+
+# Conjunto de géneros
+generos = set()
+
+# Diccionario principal de la biblioteca
+biblioteca = {}
+
+def registrar_libro(codigo, titulo, autor, anio, genero):
+    if codigo in biblioteca:
+        print("El código ya existe. No se puede registrar el libro.")
+    else:
+        biblioteca[codigo] = {
+            "titulo": titulo,
+            "autor": autor,
+            "anio": anio,
+            "genero": genero
+        }
+        generos.add(genero)
+        print(f"Libro '{titulo}' registrado con éxito.")
+
+def mostrar_libros():
+    for codigo, info in biblioteca.items():
+        print(f"Código: {codigo} | Título: {info['titulo']} | Autor: {info['autor']} | Año: {info['anio']} | Género: {info['genero']}")
+
+def consultar_libro(codigo):
+    if codigo in biblioteca:
+        print("Información del libro:", biblioteca[codigo])
+    else:
+        print("El libro no está registrado.")
+
+def mostrar_generos():
+    print("Géneros disponibles:", generos)
+
+
+# --- Ejemplo de uso ---
+registrar_libro(1, "Cien Años de Soledad", "Gabriel García Márquez", 1967, "Novela")
+registrar_libro(2, "Clean Code", "Robert C. Martin", 2008, "Tecnología")
+registrar_libro(3, "El Principito", "Antoine de Saint-Exupéry", 1943, "Infantil")
+
+mostrar_libros()
+consultar_libro(2)
+mostrar_generos()
